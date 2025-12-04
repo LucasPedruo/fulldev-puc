@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Full Dev - Navegação Única</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .page-container {
+            display: none;
+            width: 360px;
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .page-container.active {
+            display: block;
+        }
+
+        .logo img {
+            width: 140px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #e33;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+            text-decoration: none;
+        }
+
+        .button-a {
+            padding: 12px 44%;
+            background-color: #e33;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+            text-decoration: none;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .forgot-password a,
+        .back-to-login a {
+            color: #4a90e2;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .forgot-password a:hover,
+        .back-to-login a:hover {
+            color: #357abd;
+            text-decoration: underline;
+        }
+
+        .social-separator {
+            text-align: center;
+            margin: 25px 0 15px 0;
+            font-size: 14px;
+            color: #999;
+            display: flex;
+            align-items: center;
+        }
+
+        .social-separator::before,
+        .social-separator::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background-color: #eee;
+            margin: 0 10px;
+        }
+
+        .social-login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .social-login:hover {
+            background: #f7f7f7;
+        }
+
+        .social-login img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .input-group-icon {
+            position: relative;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group-icon .icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-size: 16px;
+        }
+
+        .input-group-icon input {
+            padding-left: 40px;
+        }
+
+        .back-to-login {
+            margin-top: 25px;
+            font-size: 14px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .full-page-content {
+            padding: 40px 20px;
+        }
+
+        .full-page-content h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .full-page-content p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .highlight-email {
+            font-weight: bold;
+            color: #e33;
+            word-wrap: break-word;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-container active" id="login-page">
+        <div class="logo">
+            <img src="https://i.postimg.cc/bwRXNC0Q/Gemini-Generated-Image-72vph072vph072vp-removebg-preview.png"
+                alt="Logo Full Dev">
+        </div>
+        <h1>Bem-vindo(a)</h1>
+        <p>Entre com sua conta para continuar</p>
+
+        <form>
+            <div class="input-group">
+                <label for="usuario">Usuário</label>
+                <input type="text" id="usuario" required>
+            </div>
+            <div class="input-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" required>
+            </div>
+        </form>
+        
+        <br>
+        <a class="button-a" href="/codigo-fonte/home/home-com-localstorage/index.html">Entrar</a>
+        <br>
+        <br>
+
+        <div class="forgot-password">
+            <a href="#" onclick="showPage('reset-page'); return false;">Esqueceu sua senha?</a>
+        </div>
+
+        <div class="social-separator">Ou continue com</div>
+
+        <div class="google-login social-login">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+                alt="Google logo">
+            <span>Entrar com Google</span>
+        </div>
+        <div class="facebook-login social-login">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png"
+                alt="Facebook logo">
+            <span>Entrar com Facebook</span>
+        </div>
+    </div>
+
+    <div class="page-container" id="reset-page">
+        <div class="logo">
+            <img src="https://i.postimg.cc/bwRXNC0Q/Gemini-Generated-Image-72vph072vph072vp-removebg-preview.png"
+                alt="Logo Full Dev">
+        </div>
+        <h1>Esqueceu sua senha?</h1>
+        <p>Por favor, insira o endereço de e-mail utilizado para criar sua conta</p>
+
+        <form id="resetPasswordForm">
+            <div class="input-group-icon">
+                <i class="fas fa-envelope icon"></i>
+                <label for="email" class="sr-only">Endereço de e-mail</label>
+                <input type="email" id="email" placeholder="Endereço de e-mail" required>
+            </div>
+            <button type="submit">Solicitar redefinição de senha</button>
+        </form>
+
+        <div class="back-to-login">
+            <a href="#" onclick="showPage('login-page'); return false;">Voltar para fazer login</a>
+        </div>
+    </div>
+
+    <div class="page-container" id="confirmation-reset-page">
+        <div class="full-page-content">
+            <div class="logo">
+                <img src="https://i.postimg.cc/bwRXNC0Q/Gemini-Generated-Image-72vph072vph072vp-removebg-preview.png"
+                    alt="Logo Full Dev">
+            </div>
+            <h1>Requisição Enviada!</h1>
+            <p>Um link para redefinição de senha foi enviado para:<span id="email-display"
+                    class="highlight-email"></span></p>
+            <p style="margin-bottom: 40px; font-size: 16px;">Verifique sua caixa de entrada e spam.</p>
+
+            <button onclick="showPage('login-page')">Voltar para o Login</button>
+        </div>
+    </div>
+
+    <!--     <div class="page-container" id="home-page">
+        <div class="full-page-content">
+            <div class="logo">
+                <img src="https://i.postimg.cc/bwRXNC0Q/Gemini-Generated-Image-72vph072vph072vp-removebg-preview.png"
+                    alt="Logo Full Dev">
+            </div>
+            <h1>Bem-vindo à página inicial!</h1>
+            <p>Você entrou com sucesso e está pronto para continuar.</p>
+            <button onclick="showPage('confirmacao-page')">Ir para Confirmação</button>
+        </div>
+    </div>
+
+    <div class="page-container" id="confirmacao-page">
+        <div class="full-page-content">
+            <div class="logo">
+                <img src="https://i.postimg.cc/bwRXNC0Q/Gemini-Generated-Image-72vph072vph072vp-removebg-preview.png"
+                    alt="Logo Full Dev">
+            </div>
+            <h1>Confirmação concluída!</h1>
+            <p>Você chegou à página final da demonstração de navegação.</p>
+            <button onclick="showPage('login-page')">Voltar ao login</button>
+        </div>
+    </div> -->
+
+    <script>
+        let lastEmail = '';
+        function showPage(pageId) {
+            document.querySelectorAll('.page-container').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+
+            if (pageId === 'confirmation-reset-page' && lastEmail) {
+                document.getElementById('email-display').textContent = lastEmail;
+            }
+        }
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            if (usuario && senha) {
+                showPage('home-page');
+            } else {
+                alert("Por favor, preencha todos os campos!");
+            }
+        });
+        document.getElementById("resetPasswordForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const emailInput = document.getElementById("email");
+            const email = emailInput.value;
+
+            if (email) {
+                lastEmail = email;
+                showPage('confirmation-reset-page');
+                emailInput.value = '';
+            } else {
+                alert("Por favor, insira seu e-mail.");
+            }
+        });
+    </script>
+
+</body>
+
+</html>
